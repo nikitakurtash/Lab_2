@@ -1,26 +1,38 @@
 package main
 
-func quickSort(nums []int) []int {
-	if len(nums) < 2 {
-		return nums
-	}
+import (
+	"fmt"
+)
 
-	pivot := nums[0]
-	var less, greater []int
-	for _, num := range nums[1:] {
-		if num <= pivot {
-			less = append(less, num)
-		} else {
-			greater = append(greater, num)
+func partition(array []int, low, high int) int {
+	i := (low - 1)
+	pivot := array[high]
+	for j := low; j < high; j++ {
+		if array[j] <= pivot {
+			i = i + 1
+			array[i], array[j] = array[j], array[i]
 		}
 	}
+	array[i+1], array[high] = array[high], array[i+1]
+	return (i + 1)
+}
 
-	result := append(quickSort(less), pivot)
-	result = append(result, quickSort(greater)...)
-	return result
+func quickSort(array []int, low, high int) {
+	if low < high {
+		pi := partition(array, low, high)
+		quickSort(array, low, pi-1)
+		quickSort(array, pi+1, high)
+	}
 }
 
 func findKthLargest(nums []int, k int) int {
-	sortedNums := quickSort(nums)
-	return sortedNums[len(sortedNums)-k]
+	quickSort(nums, 0, len(nums)-1)
+	return nums[len(nums)-k]
+}
+
+func main() {
+	nums := []int{5, 2, 4, 1, 3}
+	k := 2
+	fmt.Println()
+	fmt.Println(findKthLargest(nums, k))
 }
