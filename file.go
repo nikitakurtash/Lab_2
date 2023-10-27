@@ -1,9 +1,5 @@
 package main
 
-import (
-	"fmt"
-)
-
 func partition(array []int, low, high int) int {
 	i := (low - 1)
 	pivot := array[high]
@@ -28,11 +24,4 @@ func quickSort(array []int, low, high int) {
 func findKthLargest(nums []int, k int) int {
 	quickSort(nums, 0, len(nums)-1)
 	return nums[len(nums)-k]
-}
-
-func main() {
-	nums := []int{5, 2, 4, 1, 3}
-	k := 2
-	fmt.Println()
-	fmt.Println(findKthLargest(nums, k))
 }
