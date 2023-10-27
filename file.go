@@ -1,27 +1,25 @@
 package main
 
-func partition(array []int, low, high int) int {
-	i := (low - 1)
-	pivot := array[high]
-	for j := low; j < high; j++ {
-		if array[j] <= pivot {
-			i = i + 1
-			array[i], array[j] = array[j], array[i]
-		}
+func shellSort(nums []int) {
+	n := len(nums)
+	h := 1
+	// Находим начальное значение h
+	for h < n/3 {
+		h = 3*h + 1
 	}
-	array[i+1], array[high] = array[high], array[i+1]
-	return (i + 1)
-}
 
-func quickSort(array []int, low, high int) {
-	if low < high {
-		pi := partition(array, low, high)
-		quickSort(array, low, pi-1)
-		quickSort(array, pi+1, high)
+	for h >= 1 {
+		// Производим вставку с инкрементом h
+		for i := h; i < n; i++ {
+			for j := i; j >= h && nums[j] < nums[j-h]; j -= h {
+				nums[j], nums[j-h] = nums[j-h], nums[j]
+			}
+		}
+		h /= 3
 	}
 }
 
 func findKthLargest(nums []int, k int) int {
-	quickSort(nums, 0, len(nums)-1)
+	shellSort(nums)
 	return nums[len(nums)-k]
 }
